@@ -1,0 +1,19 @@
+{
+  "name": "snowgun",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "playwright": "^1.7.1",
+    "port-authority": "^1.1.2",
+    "snowpack": "^3.0.11",
+    "zoar": "^0.0.6",
+    "zorax": "^0.0.12"
+  },
+  "scripts": {
+    "mount": "mkdir -p tmp && mount -t tmpfs -o size=512M tmpfs tmp",
+    "unmount": "umount tmp",
+    "test": "zoar"
+  }
+}
