@@ -28,34 +28,30 @@ test('bubbled', dev(), async t => {
 
   await t.eqBody('hello foo', 'initial')
 
-  let idle = accept.nextCall()
+  await accept.nextCallAfter(async () => {
+    await t.fixture.write({
+      'index.js': `
+        import foo from './foo.js'
 
-  await t.fixture.write({
-    'index.js': `
-      import foo from './foo.js'
+        document.body.innerHTML = 'allo ' + foo
 
-      document.body.innerHTML = 'allo ' + foo
-
-      if (import.meta.hot) {
-        import.meta.hot.accept(accept)
-      }
-    `,
+        if (import.meta.hot) {
+          import.meta.hot.accept(accept)
+        }
+      `,
+    })
   })
-
-  await idle
 
   accept.wasCalled('index accept handler has been called on index.js update')
   t.eq(accept.args[0][0].bubbled, false, 'bubbled is false on direct updates')
 
-  idle = accept.nextCall()
-
-  await t.fixture.write({
-    'foo.js': `
-      export default 'oof'
-    `,
+  await accept.nextCallAfter(async () => {
+    await t.fixture.write({
+      'foo.js': `
+        export default 'oof'
+      `,
+    })
   })
-
-  await idle
 
   accept.wasCalled('index accept handler has been called on foo.js update')
   t.eq(accept.args[1][0].bubbled, true, 'bubbled is true on transitive updates')

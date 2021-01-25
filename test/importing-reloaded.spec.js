@@ -60,48 +60,45 @@ test('importing updated file', dev({ open: false }), async t => {
 
   // --- a changes ---
 
-  reported = reportA.nextCall()
+  await reportA.nextCallAfter(async () => {
+    await t.fixture.write({
+      'a.js': `
+        const value = 'a1'
 
-  await t.fixture.write({
-    'a.js': `
-      const value = 'a1'
+        export default value
+        debugger
 
-      export default value
+        reportA(value)
 
-      reportA(value)
-
-      if (import.meta.hot) {
-        import.meta.hot.accept()
-      }
-    `,
+        if (import.meta.hot) {
+          import.meta.hot.accept()
+        }
+      `,
+    })
   })
-
-  await reported
 
   reportA.wasCalledWith('a1')
   reportB.wasNotCalled()
 
   // --- b changes ---
 
-  reported = reportB.nextCall()
+  await reportB.nextCallAfter(async () => {
+    await t.fixture.write({
+      'b.js': `
+        import a from './a.js'
 
-  await t.fixture.write({
-    'b.js': `
-      import a from './a.js'
+        const value = 'b1:' + a
 
-      const value = 'b1:' + a
+        export default value
 
-      export default value
+        reportB(value)
 
-      reportB(value)
-
-      if (import.meta.hot) {
-        import.meta.hot.accept()
-      }
-    `,
+        if (import.meta.hot) {
+          import.meta.hot.accept()
+        }
+      `,
+    })
   })
-
-  await reported
 
   reportA.wasNotCalled()
   reportB.wasCalledWith('b1:a1')
