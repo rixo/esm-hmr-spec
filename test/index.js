@@ -159,4 +159,15 @@ export const { test, describe } = plug([
       }
     },
   },
+
+  {
+    name: 'pageSpy',
+    test(t) {
+      t.pageSpy = async (name, ...args) => {
+        const spy = t.spy(...args)
+        await t.page.exposeFunction(name, spy)
+        return spy
+      }
+    },
+  },
 ])
