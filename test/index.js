@@ -1,6 +1,6 @@
 import { plug } from 'zorax'
 
-import _browse from '../lib/browse'
+import _browse, { lock as lockBrowser } from '../lib/browse'
 import _fixture from '../lib/fixture'
 import _serve from '../lib/snowpack/serve'
 import _hmr from '../lib/snowpack/hmr'
@@ -8,7 +8,7 @@ import _hmr from '../lib/snowpack/hmr'
 const extractData = args =>
   typeof args[args.length - 1] === 'function' ? null : args.pop()
 
-const closable = get => opts =>
+const closable = (get, errorHandler) => opts =>
   async function zora_spec_fn(t, next, ...args) {
     const [close, service] = await get(opts)
 
@@ -26,6 +26,10 @@ const closable = get => opts =>
           setTimeout(() => reject(new Error('Timeout after 5s')), 5000)
         )
       )
+    }
+
+    if (errorHandler) {
+      promises.push(errorHandler(service))
     }
 
     await Promise.race(promises)
@@ -54,51 +58,64 @@ export const fixture = closable(async opts => {
   return [fixture.close, { fixture }]
 })
 
-export const dev = closable(async arg => {
-  const userOpts =
-    typeof arg === 'string' || Array.isArray(arg) ? { fixture: arg } : arg || {}
+export const dev = closable(
+  async arg => {
+    const userOpts =
+      typeof arg === 'string' || Array.isArray(arg)
+        ? { fixture: arg }
+        : arg || {}
 
-  const { open = false, ...opts } = userOpts
+    const { open = false, ...opts } = userOpts
 
-  const { close: closeFixture, ...fixture } = await _fixture(opts.fixture)
+    const { close: closeFixture, ...fixture } = await _fixture(opts.fixture)
 
-  const [
-    { close: closeServer, ...server },
-    { close: closeBrowser, ...browser },
-  ] = await Promise.all([
-    _serve({ fixture, ...opts.serve }),
-    _browse(opts.browse),
-  ])
+    const [
+      { close: closeServer, ...server },
+      { close: closeBrowser, ...browser },
+    ] = await Promise.all([
+      _serve({ fixture, ...opts.serve }),
+      _browse(opts.browse),
+    ])
 
-  const { page } = browser
+    const { page } = browser
 
-  const hmr = _hmr({ page, ...opts.hmr })
+    const hmr = _hmr({ page, ...opts.hmr })
 
-  if (open) {
-    const url = open === true ? '/' : open
-    await browser.page.goto(server.url + url)
-  }
+    if (open) {
+      const url = open === true ? '/' : open
+      await browser.page.goto(server.url + url)
+    }
 
-  return [
-    async () => {
-      await Promise.all([
-        closeBrowser(),
-        Promise.resolve().then(async () => {
-          await closeServer()
-          await new Promise(resolve => setTimeout(resolve, 100))
-          await closeFixture()
-        }),
-      ])
-    },
-    {
-      fixture,
-      server,
-      browser,
-      page,
-      hmr,
-    },
-  ]
-})
+    return [
+      async () => {
+        await Promise.all([
+          closeBrowser(),
+          Promise.resolve().then(async () => {
+            await closeServer()
+            await new Promise(resolve => setTimeout(resolve, 100))
+            await closeFixture()
+          }),
+        ])
+      },
+      {
+        fixture,
+        server,
+        browser,
+        page,
+        hmr,
+      },
+    ]
+  },
+  ({ page, hmr }) =>
+    Promise.race([
+      hmr.nextError(),
+      new Promise((resolve, reject) => {
+        page.exposeFunction('reportError', err => {
+          reject(`Unexpected error: ${err}`)
+        })
+      }),
+    ])
+)
 
 export const checkpoints = () =>
   async function zora_spec_fn(t, next, ...args) {
@@ -144,7 +161,7 @@ export const { test, describe } = plug([
 
   {
     name: 'report time',
-    async report(h) {
+    report(h) {
       const started = Date.now()
       return () => {
         const elapsed = Date.now() - started
@@ -158,6 +175,11 @@ export const { test, describe } = plug([
         console.log()
       }
     },
+  },
+
+  {
+    name: 'lock browser',
+    report: () => lockBrowser(),
   },
 
   {

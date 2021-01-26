@@ -6,9 +6,21 @@
     <meta name="description" content="Starter Snowpack App" />
     <!-- <link rel="stylesheet" type="text/css" href="/index.css" /> -->
     <title>Snowgun default fixture</title>
+    <style>
+      body {
+        color: white;
+        font-size: 16px;
+      }
+    </style>
   </head>
   <body>
     <h1>Welcome to Snowpack!</h1>
+    <script>
+      window.onerror = err => {
+        console.error((err && err.stack) || err)
+        reportError(err)
+      }
+    </script>
     <script type="module" src="/dist/index.js"></script>
   </body>
 </html>

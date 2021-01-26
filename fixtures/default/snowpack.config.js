@@ -10,6 +10,7 @@ module.exports = {
   },
   devOptions: {
     open: 'none',
+    // hmrErrorOverlay: false,
   },
   buildOptions: {},
   routes: [],
