@@ -108,10 +108,20 @@ export const dev = closable(
   },
   ({ page, hmr }) =>
     Promise.race([
-      hmr.nextError(),
+      hmr.nextConsoleError(),
       new Promise((resolve, reject) => {
         page.exposeFunction('reportError', err => {
-          reject(`Unexpected error: ${err}`)
+          reject(new Error(`Unexpected error: ${err}`))
+        })
+      }),
+      new Promise((resolve, reject) => {
+        let loaded = false
+        page.on('framenavigated', () => {
+          if (!loaded) {
+            loaded = true
+            return
+          }
+          reject(new Error('Unexpected page navigation'))
         })
       }),
     ])
@@ -171,8 +181,8 @@ export const { test, describe } = plug([
         } else {
           msg = `${(elapsed / 1000).toFixed(2)}s`
         }
-        console.log(` ${msg}`)
-        console.log()
+        console.info(` ${msg}`)
+        console.info()
       }
     },
   },
