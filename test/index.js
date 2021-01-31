@@ -108,7 +108,9 @@ export const dev = closable(
   },
   ({ page, hmr }) =>
     Promise.race([
-      hmr.nextConsoleError(),
+      hmr.nextConsoleError().catch(err => {
+        throw `Unexpected console error:\n\n${err}`
+      }),
       new Promise((resolve, reject) => {
         page.exposeFunction('reportError', err => {
           reject(new Error(`Unexpected error: ${err}`))
