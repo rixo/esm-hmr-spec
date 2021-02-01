@@ -123,6 +123,9 @@ export const dev = closable(
             loaded = true
             return
           }
+          if (hmr.consumeExpectedNavigation()) {
+            return
+          }
           reject(new Error('Unexpected page navigation'))
         })
       }),
