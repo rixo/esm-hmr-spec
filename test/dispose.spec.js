@@ -1,6 +1,6 @@
 import { test, dev } from '.'
 
-test('dispose handler', dev(), async t => {
+test('dispose handler', dev(), async (t) => {
   const loaded = t.spy()
   const report = t.spy()
   const dispose = t.spy()

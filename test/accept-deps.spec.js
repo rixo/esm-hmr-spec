@@ -1,6 +1,6 @@
 import { test, dev } from '.'
 
-test('accept deps', dev(), async t => {
+test('accept deps', dev(), async (t) => {
   const loaded = await t.pageSpy('loaded')
   const report = await t.pageSpy('report')
   const accept = await t.pageSpy('accept')
@@ -54,7 +54,7 @@ test('accept deps', dev(), async t => {
   }
 })
 
-test('accept deps: accepted & updated dep', dev(), async t => {
+test('accept deps: accepted & updated dep', dev(), async (t) => {
   const loaded = await t.pageSpy('loaded')
   const report = await t.pageSpy('report')
   const accept = await t.pageSpy('accept')
@@ -124,7 +124,7 @@ test('accept deps: accepted & updated dep', dev(), async t => {
   //
   {
     // simulate user delay before changing the next file
-    await new Promise(resolve => setTimeout(resolve, 3))
+    await new Promise((resolve) => setTimeout(resolve, 3))
 
     await accept.nextCallAfter(async () => {
       await t.fixture.write({

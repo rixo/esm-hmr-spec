@@ -1,0 +1,11 @@
+extends:
+  - '@rixo'
+
+overrides:
+  - files: ["lib/**"]
+    env:
+      node: true
+  - files: ["test/**"]
+    env:
+      node: true
+      browser: true

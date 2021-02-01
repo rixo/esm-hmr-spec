@@ -1,6 +1,6 @@
 import { test, dev } from '.'
 
-test('import.meta.hot.invalidate()', dev(), async t => {
+test('import.meta.hot.invalidate()', dev(), async (t) => {
   const loaded = await t.pageSpy('loaded')
   const accept = await t.pageSpy('accept')
   const report = await t.pageSpy('report')

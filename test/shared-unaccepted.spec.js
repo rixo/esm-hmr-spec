@@ -11,7 +11,7 @@ import { test, dev } from '.'
  *
  * => a and b get same copy of transitive
  */
-test('shared unaccepted deps', dev(), async t => {
+test('shared unaccepted deps', dev(), async (t) => {
   const reportA = t.spy()
   const reportB = t.spy()
 
@@ -19,7 +19,7 @@ test('shared unaccepted deps', dev(), async t => {
   await t.page.exposeFunction('reportB', reportB)
 
   const reportsNextCall = () =>
-    Promise.all([reportA, reportB].map(spy => spy.nextCall()))
+    Promise.all([reportA, reportB].map((spy) => spy.nextCall()))
 
   // --- 0 ---
 

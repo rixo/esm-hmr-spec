@@ -16,7 +16,7 @@ import { test, dev } from '.'
  *
  * => index gets updated, gets new version of foo
  */
-test('changing exports: unaccepted exporter', dev(), async t => {
+test('changing exports: unaccepted exporter', dev(), async (t) => {
   const report = t.spy()
 
   await t.page.exposeFunction('report', report)

@@ -11,14 +11,14 @@ import { test, dev } from '.'
  *
  * => b gets last version of a
  */
-test('importing updated file', dev({ open: false }), async t => {
+test('importing updated file', dev({ open: false }), async (t) => {
   const reportA = t.spy(() => {})
   const reportB = t.spy(() => {})
 
   await t.page.exposeFunction('reportA', reportA)
   await t.page.exposeFunction('reportB', reportB)
 
-  let reported = Promise.all([reportA, reportB].map(spy => spy.nextCall()))
+  let reported = Promise.all([reportA, reportB].map((spy) => spy.nextCall()))
 
   await t.fixture.write({
     'index.js': `

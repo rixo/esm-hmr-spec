@@ -1,11 +1,11 @@
 import { test, dev } from '.'
 
-test('last version of CSS is not lost on importer update', dev(), async t => {
+test('last version of CSS is not lost on importer update', dev(), async (t) => {
   const loaded = t.spy()
 
   await t.page.exposeFunction('loaded', loaded)
 
-  const getStyle = () => t.page.$eval('body', el => getComputedStyle(el))
+  const getStyle = () => t.page.$eval('body', (el) => getComputedStyle(el))
 
   // --- 0 ---
   {
@@ -92,12 +92,12 @@ test('last version of CSS is not lost on importer update', dev(), async t => {
   }
 })
 
-test('orphan CSS lifecycle', dev(), async t => {
+test('orphan CSS lifecycle', dev(), async (t) => {
   const loaded = t.spy()
 
   await t.page.exposeFunction('loaded', loaded)
 
-  const getStyle = () => t.page.$eval('body', el => getComputedStyle(el))
+  const getStyle = () => t.page.$eval('body', (el) => getComputedStyle(el))
 
   // --- 0 ---
   {
@@ -213,7 +213,7 @@ test('orphan CSS lifecycle', dev(), async t => {
     })
 
     // give some time for the incorrect update to happen
-    await new Promise(resolve => setTimeout(resolve, 50))
+    await new Promise((resolve) => setTimeout(resolve, 50))
 
     loaded.wasNotCalled()
 

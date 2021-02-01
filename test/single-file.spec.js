@@ -3,7 +3,7 @@ import * as path from 'path'
 
 import { test, dev } from '.'
 
-test('single file', dev(), async t => {
+test('single file', dev(), async (t) => {
   const accept = t.spy()
   const accept2 = t.spy()
   const notify = t.spy()

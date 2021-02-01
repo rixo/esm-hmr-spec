@@ -3,7 +3,7 @@ import { test, dev } from '.'
 // Exploratory: ensure we don't get out of sync with the update param on initial
 // page load / full reload.
 //
-test.skip('full page reload', dev(), async t => {
+test.skip('full page reload', dev(), async (t) => {
   const loaded = await t.pageSpy('loaded')
   const accept = await t.pageSpy('accept')
   const report = await t.pageSpy('report')

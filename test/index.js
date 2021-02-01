@@ -5,10 +5,10 @@ import _fixture from '../lib/fixture'
 import _serve from '../lib/snowpack/serve'
 import _hmr from '../lib/snowpack/hmr'
 
-const extractData = args =>
+const extractData = (args) =>
   typeof args[args.length - 1] === 'function' ? null : args.pop()
 
-const closable = (get, errorHandler) => opts =>
+const closable = (get, errorHandler) => (opts) =>
   async function zora_spec_fn(t, next, ...args) {
     const [close, service] = await get(opts)
 
@@ -37,12 +37,12 @@ const closable = (get, errorHandler) => opts =>
     await close()
   }
 
-export const serve = closable(async opts => {
+export const serve = closable(async (opts) => {
   const { close, ...server } = await _serve(opts)
   return [close, { server }]
 })
 
-export const browse = closable(async opts => {
+export const browse = closable(async (opts) => {
   const { close, ...browser } = await _browse(opts)
   return [
     close,
@@ -53,13 +53,13 @@ export const browse = closable(async opts => {
   ]
 })
 
-export const fixture = closable(async opts => {
+export const fixture = closable(async (opts) => {
   const fixture = await _fixture(opts)
   return [fixture.close, { fixture }]
 })
 
 export const dev = closable(
-  async arg => {
+  async (arg) => {
     const userOpts =
       typeof arg === 'string' || Array.isArray(arg)
         ? { fixture: arg }
@@ -92,7 +92,7 @@ export const dev = closable(
           closeBrowser(),
           Promise.resolve().then(async () => {
             await closeServer()
-            await new Promise(resolve => setTimeout(resolve, 100))
+            await new Promise((resolve) => setTimeout(resolve, 100))
             await closeFixture()
           }),
         ])
@@ -108,11 +108,11 @@ export const dev = closable(
   },
   ({ page, hmr }) =>
     Promise.race([
-      hmr.nextConsoleError().catch(err => {
+      hmr.nextConsoleError().catch((err) => {
         throw `Unexpected console error:\n\n${err}`
       }),
       new Promise((resolve, reject) => {
-        page.exposeFunction('reportError', err => {
+        page.exposeFunction('reportError', (err) => {
           reject(new Error(`Unexpected error: ${err}`))
         })
       }),
@@ -139,7 +139,7 @@ export const checkpoints = () =>
     t.checkpoints = (expected, msg = 'pass all checkpoints') => {
       const checkpoints = []
 
-      const check = name => {
+      const check = (name) => {
         checkpoints.push(name)
       }
 
@@ -170,7 +170,7 @@ export const { test, describe } = plug([
     name: 'eqBody',
     test(t) {
       t.eqBody = async (content, message = `body should be ${content}`) =>
-        t.eq(await t.page.$eval('body', el => el.innerHTML), content, message)
+        t.eq(await t.page.$eval('body', (el) => el.innerHTML), content, message)
     },
   },
 

@@ -1,6 +1,6 @@
 import { test, dev } from '.'
 
-test('dynamic imports', dev(), async t => {
+test('dynamic imports', dev(), async (t) => {
   const report = t.spy()
   const loaded = t.spy()
 
