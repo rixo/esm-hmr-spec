@@ -2,19 +2,18 @@ import { plug } from 'zorax'
 
 import _browse, { lock as lockBrowser } from '../lib/browse'
 import _fixture from '../lib/fixture'
+import createServe from '../lib/serve'
+import createHmr from '../lib/hmr'
 
 const adapter = process.env.ADAPTER || 'snowpack'
 
 const loadAdapter = async () => {
-  const [{ default: serve }, { default: hmr }] = await Promise.all([
-    import(`../adapters/${adapter}/serve`),
-    import(`../adapters/${adapter}/hmr`),
-  ])
-  return { serve, hmr }
+  const { serve, hmr } = await import(`../adapters/${adapter}`)
+  return {
+    serve: createServe(serve),
+    hmr: createHmr(hmr),
+  }
 }
-
-const extractData = (args) =>
-  typeof args[args.length - 1] === 'function' ? null : args.pop()
 
 const closable = (get, errorHandler) => (opts) =>
   async function zora_spec_fn(t, next, ...args) {
@@ -45,14 +44,9 @@ const closable = (get, errorHandler) => (opts) =>
     await close()
   }
 
-<<<<<<< Updated upstream
 export const serve = closable(async (opts) => {
-  const { close, ...server } = await _serve(opts)
-=======
-export const serve = closable(async opts => {
   const { serve } = await loadAdapter()
   const { close, ...server } = await serve(opts)
->>>>>>> Stashed changes
   return [close, { server }]
 })
 
@@ -81,7 +75,7 @@ export const dev = closable(
 
     const { open = false, ...opts } = userOpts
 
-    const adapter = await loadAdapter()
+    const { hmr: _hmr, serve: _serve } = await loadAdapter()
 
     const { close: closeFixture, ...fixture } = await _fixture(opts.fixture)
 
@@ -89,13 +83,13 @@ export const dev = closable(
       { close: closeServer, ...server },
       { close: closeBrowser, ...browser },
     ] = await Promise.all([
-      adapter.serve({ fixture, ...opts.serve }),
+      _serve({ fixture, ...opts.serve }),
       _browse(opts.browse),
     ])
 
     const { page } = browser
 
-    const hmr = adapter.hmr({ page, ...opts.hmr })
+    const hmr = _hmr({ page, ...opts.hmr })
 
     if (open) {
       const url = open === true ? '/' : open
@@ -125,6 +119,7 @@ export const dev = closable(
   ({ page, hmr }) =>
     Promise.race([
       hmr.nextConsoleError().catch((err) => {
+        // eslint-disable-next-line no-throw-literal
         throw `Unexpected console error:\n\n${err}`
       }),
       new Promise((resolve, reject) => {
@@ -192,7 +187,7 @@ export const { test, describe } = plug([
 
   {
     name: 'report time',
-    report(h) {
+    report() {
       const started = Date.now()
       return () => {
         const elapsed = Date.now() - started
@@ -202,7 +197,9 @@ export const { test, describe } = plug([
         } else {
           msg = `${(elapsed / 1000).toFixed(2)}s`
         }
+        // eslint-disable-next-line no-console
         console.info(` ${msg}`)
+        // eslint-disable-next-line no-console
         console.info()
       }
     },
