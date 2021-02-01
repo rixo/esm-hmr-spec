@@ -1,18 +1,21 @@
 import { plug } from 'zorax'
 
 import _browse, { lock as lockBrowser } from '../lib/browse'
-import _fixture from '../lib/fixture'
+import createFixture from '../lib/fixture'
 import createServe from '../lib/serve'
 import createHmr from '../lib/hmr'
 
 const adapter = process.env.ADAPTER || 'snowpack'
 
-const loadAdapter = async () => {
+let loadAdapter = async () => {
   const { serve, hmr } = await import(`../adapters/${adapter}`)
-  return {
+  const loaded = {
+    fixture: createFixture(adapter),
     serve: createServe(serve),
     hmr: createHmr(hmr),
   }
+  loadAdapter = async () => loaded
+  return loaded
 }
 
 const closable = (get, errorHandler) => (opts) =>
@@ -62,6 +65,7 @@ export const browse = closable(async (opts) => {
 })
 
 export const fixture = closable(async (opts) => {
+  const { fixture: _fixture } = await loadAdapter()
   const fixture = await _fixture(opts)
   return [fixture.close, { fixture }]
 })
@@ -75,7 +79,7 @@ export const dev = closable(
 
     const { open = false, ...opts } = userOpts
 
-    const { hmr: _hmr, serve: _serve } = await loadAdapter()
+    const { fixture: _fixture, serve: _serve, hmr: _hmr } = await loadAdapter()
 
     const { close: closeFixture, ...fixture } = await _fixture(opts.fixture)
 

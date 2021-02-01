@@ -12,25 +12,28 @@ test('browse', browse(), checkpoints(), async (t) => {
 
   const check = t.checkpoints(2)
 
-  await t.test('concurency', browse(), async (t) => {
+  await t.test('concurency', browse(), async () => {
     check()
   })
 
   check()
 })
 
-test('serve', serve(), browse(), async (t) => {
-  t.ok(t.server, 'provides t.server')
-  t.ok(t.server.url, 't.server has a url')
-
-  await t.page.goto(t.server.url)
-
-  t.eq(
-    await t.page.$eval('h1', (el) => el.innerHTML),
-    'Welcome to Snowpack!',
-    'can test the page'
-  )
-})
+// TODO standalone serve without fixture is not supported anymore... any point
+// to keep / restore this test?
+//
+// test('serve', serve(), browse(), async (t) => {
+//   t.ok(t.server, 'provides t.server')
+//   t.ok(t.server.url, 't.server has a url')
+//
+//   await t.page.goto(t.server.url)
+//
+//   t.eq(
+//     await t.page.$eval('h1', (el) => el.innerHTML),
+//     'Welcome to Snowpack!',
+//     'can test the page'
+//   )
+// })
 
 describe('fixture', () => {
   test('defaults', fixture(), async (t) => {
