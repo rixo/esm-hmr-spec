@@ -2,7 +2,7 @@ extends:
   - '@rixo'
 
 overrides:
-  - files: ["lib/**"]
+  - files: ["lib/**", "adapters/**"]
     env:
       node: true
   - files: ["test/**"]

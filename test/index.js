@@ -2,8 +2,16 @@ import { plug } from 'zorax'
 
 import _browse, { lock as lockBrowser } from '../lib/browse'
 import _fixture from '../lib/fixture'
-import _serve from '../lib/snowpack/serve'
-import _hmr from '../lib/snowpack/hmr'
+
+const adapter = process.env.ADAPTER || 'snowpack'
+
+const loadAdapter = async () => {
+  const [{ default: serve }, { default: hmr }] = await Promise.all([
+    import(`../adapters/${adapter}/serve`),
+    import(`../adapters/${adapter}/hmr`),
+  ])
+  return { serve, hmr }
+}
 
 const extractData = (args) =>
   typeof args[args.length - 1] === 'function' ? null : args.pop()
@@ -37,8 +45,14 @@ const closable = (get, errorHandler) => (opts) =>
     await close()
   }
 
+<<<<<<< Updated upstream
 export const serve = closable(async (opts) => {
   const { close, ...server } = await _serve(opts)
+=======
+export const serve = closable(async opts => {
+  const { serve } = await loadAdapter()
+  const { close, ...server } = await serve(opts)
+>>>>>>> Stashed changes
   return [close, { server }]
 })
 
@@ -67,19 +81,21 @@ export const dev = closable(
 
     const { open = false, ...opts } = userOpts
 
+    const adapter = await loadAdapter()
+
     const { close: closeFixture, ...fixture } = await _fixture(opts.fixture)
 
     const [
       { close: closeServer, ...server },
       { close: closeBrowser, ...browser },
     ] = await Promise.all([
-      _serve({ fixture, ...opts.serve }),
+      adapter.serve({ fixture, ...opts.serve }),
       _browse(opts.browse),
     ])
 
     const { page } = browser
 
-    const hmr = _hmr({ page, ...opts.hmr })
+    const hmr = adapter.hmr({ page, ...opts.hmr })
 
     if (open) {
       const url = open === true ? '/' : open
