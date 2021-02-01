@@ -42,9 +42,11 @@ const closable = (get, errorHandler) => (opts) =>
       promises.push(errorHandler(service))
     }
 
-    await Promise.race(promises)
-
-    await close()
+    try {
+      await Promise.race(promises)
+    } finally {
+      await close()
+    }
   }
 
 export const serve = closable(async (opts) => {
