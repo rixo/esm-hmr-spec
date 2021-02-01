@@ -1,6 +1,3 @@
-import * as fs from 'fs'
-import * as path from 'path'
-
 import { test, dev } from '.'
 
 test('single file', dev(), async (t) => {
