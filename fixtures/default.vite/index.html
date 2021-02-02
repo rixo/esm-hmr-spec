@@ -3,9 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Starter Snowpack App" />
-    <!-- <link rel="stylesheet" type="text/css" href="/index.css" /> -->
-    <title>Snowgun default fixture</title>
+    <title>Vite default fixture</title>
     <style>
       body {
         background-color: white;
@@ -13,15 +11,15 @@
         font-size: 16px;
       }
     </style>
-  </head>
-  <body>
-    <h1>Welcome to Snowpack!</h1>
     <script>
-      window.onerror = err => {
+      window.onerror = (err) => {
         console.error((err && err.stack) || err)
         reportError(err)
       }
     </script>
-    <script type="module" src="/dist/index.js"></script>
+  </head>
+  <body>
+    <h1>Welcome!</h1>
+    <script type="module" src="/src/index.js"></script>
   </body>
 </html>
