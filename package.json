@@ -7,7 +7,6 @@
     "fs-extra": "^9.0.1",
     "playwright": "^1.7.1",
     "port-authority": "^1.1.2",
-    "snowpack": "^3.0.11",
     "zoar": "^0.0.6",
     "zorax": "^0.0.12"
   },
@@ -20,6 +19,8 @@
     "@rixo/eslint-config": "^0.11.0-alpha.0",
     "eslint": "^7.19.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.3.1"
+    "eslint-plugin-prettier": "^3.3.1",
+    "snowpack": "^3.0.11",
+    "vite": "^2.0.0-beta.60"
   }
 }

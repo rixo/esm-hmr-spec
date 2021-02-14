@@ -27,11 +27,11 @@ test('single file', dev(), async (t) => {
 
   await t.hmr.ready()
 
-  accept.hasBeenCalled(0)
+  accept.wasNotCalled()
 
   await t.eqBody('hello', 'initial')
 
-  let idle = accept.nextCall()
+  let idle = Promise.race([accept.nextCall(), accept2.nextCall()])
 
   await t.fixture.write({
     'index.js': `
@@ -44,7 +44,7 @@ test('single file', dev(), async (t) => {
 
   await idle
 
-  accept.hasBeenCalled(1, 'accept handler has been called')
+  accept.wasCalled('accept handler has been called')
 
   await t.eqBody('How are you?', 'after second update')
 
@@ -63,6 +63,11 @@ test('single file', dev(), async (t) => {
 
   await t.eqBody('Bye!', 'after second update')
 
-  accept.hasBeenCalled(2, 'initial accept handler been called again')
-  accept2.hasBeenCalled(0, 'non initial accept handlers are ignored')
+  if (t.isSnowpack()) {
+    accept.wasCalled('initial accept handler was called again')
+    accept2.wasNotCalled('non initial accept handlers are ignored')
+  } else {
+    accept.wasNotCalled('initial accept handler has been replaced')
+    accept2.wasCalled('new accept handler has been called')
+  }
 })

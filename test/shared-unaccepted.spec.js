@@ -21,6 +21,8 @@ test('shared unaccepted deps', dev(), async (t) => {
   const reportsNextCall = () =>
     Promise.all([reportA, reportB].map((spy) => spy.nextCall()))
 
+  const moduleArg = t.isSnowpack() ? '{ module }' : 'module'
+
   // --- 0 ---
 
   let reportsCalled = reportsNextCall()
@@ -55,7 +57,7 @@ test('shared unaccepted deps', dev(), async (t) => {
       export default a
 
       if (import.meta.hot) {
-        import.meta.hot.accept(({ module }) => {
+        import.meta.hot.accept((${moduleArg}) => {
           a.value = module.default.value
           _callback(a)
         })
@@ -78,7 +80,7 @@ test('shared unaccepted deps', dev(), async (t) => {
       export default b
 
       if (import.meta.hot) {
-        import.meta.hot.accept(({ module }) => {
+        import.meta.hot.accept((${moduleArg}) => {
           b.value = module.default.value
           _callback(b)
         })

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { describe, test, serve, browse, fixture, dev, checkpoints } from '.'
+import { describe, test, browse, fixture, dev, checkpoints } from '.'
 
 test('zorax', (t) => {
   t.ok(true)
@@ -56,11 +56,37 @@ describe('fixture', () => {
   )
 })
 
+test('hmr', dev({ fixture: 'hmr', open: true }), async (t) => {
+  t.ok(t.hmr, 'provides t.hmr')
+
+  await t.hmr.ready()
+
+  t.pass('sees HMR ready message')
+
+  const innerHTML = 'updated!'
+
+  await Promise.all([
+    t.hmr.idle(),
+    t.fixture.write({
+      'index.js': `
+        document.body.innerHTML = ${JSON.stringify(innerHTML)}
+        import.meta.hot.accept()
+      `,
+    }),
+  ])
+
+  t.pass('sees HMR complete messages')
+
+  const body = await t.page.$eval('body', (el) => el.innerHTML)
+  t.eq(body, innerHTML, 'body has been updated')
+})
+
 test('dev', dev({ fixture: 'hmr', open: true }), async (t) => {
   t.ok(t.fixture, 'provides t.fixture')
   t.ok(t.browser, 'provides t.browser')
   t.ok(t.page, 'provides t.page')
   t.ok(t.server, 'provides t.server')
+  await t.hmr.ready()
   t.eq(
     await t.page.$eval('h1', (el) => el.innerHTML),
     'bim!',

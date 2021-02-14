@@ -17,6 +17,8 @@ import { test, dev } from '.'
  * => index gets updated, gets new version of foo
  */
 test('changing exports: unaccepted exporter', dev(), async (t) => {
+  const moduleArg = t.isSnowpack() ? '{ module }' : 'module'
+
   const report = t.spy()
 
   await t.page.exposeFunction('report', report)
@@ -30,7 +32,7 @@ test('changing exports: unaccepted exporter', dev(), async (t) => {
       export default a
 
       if (import.meta.hot) {
-        import.meta.hot.accept(({ module }) => {
+        import.meta.hot.accept((${moduleArg}) => {
           report(module.default)
         })
       }
@@ -68,7 +70,7 @@ test('changing exports: unaccepted exporter', dev(), async (t) => {
         export default a + b
 
         if (import.meta.hot) {
-          import.meta.hot.accept(({ module }) => {
+          import.meta.hot.accept((${moduleArg}) => {
             report(module.default)
           })
         }
@@ -93,7 +95,7 @@ test('changing exports: unaccepted exporter', dev(), async (t) => {
         export default a + b + c
 
         if (import.meta.hot) {
-          import.meta.hot.accept(({ module }) => {
+          import.meta.hot.accept((${moduleArg}) => {
             report(module.default)
           })
         }

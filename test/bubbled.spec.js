@@ -1,6 +1,6 @@
 import { test, dev } from '.'
 
-test('bubbled', dev(), async (t) => {
+test('bubbled', dev(), ['snowpack'], async (t) => {
   const accept = t.spy(() => {})
 
   await t.page.exposeFunction('accept', accept)

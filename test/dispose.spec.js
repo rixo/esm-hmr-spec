@@ -57,10 +57,14 @@ test('dispose handler', dev(), async (t) => {
     })
 
     loaded.wasCalled('hot.data is passed to next version').with({ x: 42 })
-    // but shouldn't it?
-    dispose
-      .wasCalled('data is not passed as arg to dispose handler')
-      .with(0, null)
+    if (t.isSnowpack()) {
+      // but shouldn't it?
+      dispose
+        .wasCalled('data is not passed as arg to dispose handler')
+        .with(0, null)
+    } else {
+      dispose.wasCalled('data is passed to dipose handler').with(0, {})
+    }
   }
 
   // --- 3 ---
@@ -84,8 +88,12 @@ test('dispose handler', dev(), async (t) => {
     })
 
     loaded.wasCalled('hot.data is passed to next next version').with({ x: 43 })
-    dispose
-      .wasCalled("it's the last dispose handler that is called")
-      .with(1, null)
+    if (t.isSnowpack()) {
+      dispose
+        .wasCalled("it's the last dispose handler that is called")
+        .with(1, null)
+    } else {
+      dispose.wasCalled('data is passed to dipose handler').with(1, { x: 42 })
+    }
   }
 })

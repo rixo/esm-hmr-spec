@@ -1,6 +1,8 @@
 import { test, dev } from '.'
 
-test('accept deps', dev(), async (t) => {
+const targets = ['snowpack']
+
+test('Snowpack: accept(deps, handler)', dev(), targets, async (t) => {
   const loaded = await t.pageSpy('loaded')
   const report = await t.pageSpy('report')
   const accept = await t.pageSpy('accept')
@@ -54,7 +56,7 @@ test('accept deps', dev(), async (t) => {
   }
 })
 
-test('accept deps: accepted & updated dep', dev(), async (t) => {
+test('accept deps: accepted & updated dep', dev(), targets, async (t) => {
   const loaded = await t.pageSpy('loaded')
   const report = await t.pageSpy('report')
   const accept = await t.pageSpy('accept')
