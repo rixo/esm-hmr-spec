@@ -1,30 +1,34 @@
-# Snowgun
+# ESM HMR Spec
 
-> Spawning Snowpack projects on-demand for testing purposes.
+> A test suite to explore the behaviour of `esm-hmr` flavours.
 
-**Status:** work in progress, currently focused on testing Snowpack HMR behaviour.
+The hope is that an objective and verifiable set of rules might help with aligning behind a standard API. For the greater good of ESM adapters implementers and, ultimately, the users of your tool.
 
 ## Install
 
 ```bash
-git clone git@github.com:rixo/snowgun.git
-cd snowgun
+git clone git@github.com:rixo/esm-hmr-spec.git
+cd esm-hmr-spec
 yarn
 ```
 
 ## Usage
 
 ```bash
-yarn test
+yarn test --snowpack
+```
+
+```bash
+yarn test --vite
 ```
 
 ## Development
 
-Snowgun is powered by ~~poorly~~ lightly documented [zoar](https://github.com/rixo/zoar) test runner, and [zorax](https://github.com/rixo/zorax) extensions (themselves built upon the great [zora](https://github.com/lorenzofox3/zora) essentialist testing library).
+`esm-hmr-spec` is powered by [test-hmr](https://github.com/rixo/test-hmr) v0.2+, itself powered by ~~poorly~~ lightly documented [zoar](https://github.com/rixo/zoar) test runner, and [zorax](https://github.com/rixo/zorax) extensions (themselves built upon the great [zora](https://github.com/lorenzofox3/zora) essentialist testing library).
 
 Here are a few tips about the most useful commands you can use...
 
-**NOTE** `zoar` is aliased as `test` in `package.json`, but all the following commands are really just running `zoar` itself... You could just as well use `yarn zoar` or `node_modules/.bin/zoar`.
+**NOTE** `thc` (test-hmr cli) is aliased as `test` in `package.json`, but all the following commands are really just running `thc` itself... You could just as well use `yarn thc` or `node_modules/.bin/thc`.
 
 ### Watch mode
 
@@ -66,36 +70,38 @@ $ zoar -w -f sanity
 > !! # reset to initial options (`-f sanity`, in this example)
 ```
 
+In default interactive (watch) console, entering any command will rerun the tests immediately. When you want to change several options at once, this might not be desirable. You can switch to deferred interactive mode by pressing <kbd>:</kbd>. In this mode, options are changed without rerunning the tests. Go back to fully interactive mode by pressing <kbd>Enter</kbd> or <kbd>Ctrl+C</kbd>.
+
 ### Useful options
 
 Help:
 
 ```bash
-yarn test --help
+yarn test --help # -h
 ```
 
 Run test process with `--inspect-brk` (allow debugging Snowpack code):
 
 ```bash
-yarn test --inspect-brk
+yarn test --inspect-brk # --ib
 ```
 
 Open Playwright browser while running tests (with slowmo and also cancelling tests timeout -- allow debugging the JS running in the browser, by adding `debugger` in the fixtures' JS):
 
 ```bash
-yarn test --env OPEN
+yarn test --open # -o
 ```
 
 Display brower console output:
 
 ```bash
-yarn test --env CONSOLE
+yarn test --console # -c
 ```
 
 Filter tests by file name:
 
 ```bash
-yarn test --filter sanity
+yarn test --filter sanity # -f sanity
 ```
 
 Show the files matched by your filter:
@@ -107,13 +113,13 @@ yarn test --ls
 Filter tests by test name:
 
 ```bash
-yarn test --grep serve
+yarn test --grep serve # -g serve
 ```
 
 Print all the tests matched by the filters (instead of running them):
 
 ```bash
-yarn test --print
+yarn test --print # -p
 ```
 
 Modifier options can all be mixed and matched:

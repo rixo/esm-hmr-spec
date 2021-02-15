@@ -1,26 +1,21 @@
 {
-  "name": "snowgun",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "name": "esm-hmr-spec",
+  "version": "0.0.0",
+  "license": "ISC",
   "dependencies": {
-    "fs-extra": "^9.0.1",
-    "playwright": "^1.7.1",
-    "port-authority": "^1.1.2",
-    "zoar": "^0.0.6",
-    "zorax": "^0.0.12"
-  },
-  "scripts": {
-    "mount": "mkdir -p tmp && mount -t tmpfs -o size=512M tmpfs tmp",
-    "unmount": "umount tmp",
-    "test": "zoar"
+    "snowpack": "^3.0.11",
+    "test-hmr": "^0.2.1",
+    "vite": "^2.0.0-beta.69"
   },
   "devDependencies": {
     "@rixo/eslint-config": "^0.11.0-alpha.0",
     "eslint": "^7.19.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "snowpack": "^3.0.11",
-    "vite": "^2.0.0-beta.69"
+    "eslint-plugin-prettier": "^3.3.1"
+  },
+  "scripts": {
+    "mount": "mkdir -p tmp && mount -t tmpfs -o size=512M tmpfs tmp",
+    "unmount": "umount tmp",
+    "test": "thc"
   }
 }

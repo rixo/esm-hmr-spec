@@ -1,4 +1,4 @@
-export * from '../lib/harness.js'
+export { browse, fixture, dev, test, describe } from 'test-hmr'
 
 export const checkpoints = () =>
   async function zora_spec_fn(t, next, ...args) {
