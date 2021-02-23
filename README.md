@@ -2,7 +2,7 @@
 
 > A test suite to explore the behaviour of `esm-hmr` flavours.
 
-The hope is that an objective and verifiable set of rules might help with aligning behind a standard API. For the greater good of ESM adapters implementers and, ultimately, the users of your tool.
+The far cry hope is that an objective and verifiable set of rules might help with aligning behind a standard API. For the greater good of ESM adapters implementers and, ultimately, the users of your tool.
 
 ## Install
 
@@ -40,7 +40,7 @@ In watch mode, pressing <kbd>Enter</kbd> will rerun the tests.
 
 Also, further options can be passed / changed interactively, without the need to restart the test runner. The available options are essentially the same as the argument accepted by the cli (see bellow for a curated selection).
 
-The interactive console accepts options in long (e.g. `--filter`) or shortcut (e.g. `-f`), with or without the leading `--` / `-`.
+The interactive console accepts options in long (e.g. `--filter`) or shortcut form (e.g. `-f`), with or without the leading `--` / `-`.
 
 Adding `?` after the option name will display the current option value. Adding `!` will reset the option to `false` / empty.
 
@@ -92,7 +92,7 @@ Open Playwright browser while running tests (with slowmo and also cancelling tes
 yarn test --open # -o
 ```
 
-Display brower console output:
+Display browser console output:
 
 ```bash
 yarn test --console # -c
