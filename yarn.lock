@@ -1759,10 +1759,10 @@ table@^6.0.4:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
-test-hmr@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/test-hmr/-/test-hmr-0.2.1.tgz#ab1f9c6ac8f21aa858ac5bddc7341a5c9cf895b4"
-  integrity sha512-1F+yKRMneJ29cpNRLVYaFgnxAtki0x5MI35H5jRAuo0B4WI3FyOUs2KPqr58O1smyl4NdTQlVjB5LRDN66n3Kg==
+test-hmr@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/test-hmr/-/test-hmr-0.2.2.tgz#27d07164147a7310f099087b6bdce3b01e5e349e"
+  integrity sha512-FHc8CpbaWfjWYOtQsbY7w3sS4o2mGEsyLyJmlDkrwl+G9G+00n0hQSD4JG9nzFD4ltH/6Mj1FtNkL+lrJj4U0Q==
   dependencies:
     esm "^3.2.25"
     find-up "^5.0.0"
@@ -1770,7 +1770,7 @@ test-hmr@^0.2.1:
     playwright "^1.7.1"
     port-authority "^1.1.2"
     require-relative "^0.8.7"
-    zoar "^0.1.0"
+    zoar "^0.2.0"
     zorax "^0.0.12"
   optionalDependencies:
     snowpack "^3.0.11"
@@ -1904,10 +1904,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zoar@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/zoar/-/zoar-0.1.0.tgz#cb5c1023e64a1f460db5a88f176902153d1c0750"
-  integrity sha512-8kJ/TCSfKQOqt65oQc3ynzUISSF5XQlsTlRhLXGvTDdJBrhBVdYzcik5voLy6p/zxAzyV6f0ZoeuB1vnQxUpug==
+zoar@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/zoar/-/zoar-0.2.0.tgz#919c95318f2b23565b7d98bfd73f6908555eb462"
+  integrity sha512-2GhsECMRqEhSuf1JO9+R75R+ZHiwtqNn4eX4JSUgwNKWUv2har7GbemLavVwvYlLbMyvYfp8t5pDQd06Oqc94w==
   dependencies:
     arg "^4.1.2"
     cheap-watch "^1.0.2"
