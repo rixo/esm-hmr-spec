@@ -9,7 +9,7 @@ import { test, dev } from '.'
  *
  * b+ <==
  *
- * => b gets last version of a
+ * => b should get last version of a
  */
 test('importing updated file', dev({ open: false }), async (t) => {
   const reportA = t.spy(() => {})
