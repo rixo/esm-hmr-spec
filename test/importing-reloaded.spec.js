@@ -66,7 +66,6 @@ test('importing updated file', dev({ open: false }), async (t) => {
         const value = 'a1'
 
         export default value
-        debugger
 
         reportA(value)
 
