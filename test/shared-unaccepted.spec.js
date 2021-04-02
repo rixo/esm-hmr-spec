@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 /**
  * See: https://github.com/snowpackjs/snowpack/discussions/2238

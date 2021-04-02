@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 // Exploratory: ensure we don't get out of sync with the update param on initial
 // page load / full reload.

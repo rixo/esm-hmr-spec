@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 test('dynamic imports', dev(), async (t) => {
   const report = t.spy()

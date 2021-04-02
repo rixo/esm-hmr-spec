@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 const targets = ['snowpack']
 

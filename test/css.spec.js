@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 test('last version of CSS is not lost on importer update', dev(), async (t) => {
   const loaded = t.spy()

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { describe, test, browse, fixture, dev, checkpoints } from '.'
+import { describe, test, browse, fixture, dev, checkpoints } from './index.js'
 
 test('zorax', (t) => {
   t.ok(true)

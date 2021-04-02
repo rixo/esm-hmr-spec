@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 test('dispose handler', dev(), async (t) => {
   const loaded = t.spy()

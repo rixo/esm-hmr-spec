@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 test('import.meta.hot.invalidate()', dev(), ['future'], async (t) => {
   const loaded = await t.pageSpy('loaded')

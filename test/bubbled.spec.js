@@ -1,4 +1,4 @@
-import { test, dev } from '.'
+import { test, dev } from './index.js'
 
 test('bubbled', dev(), ['snowpack'], async (t) => {
   const accept = t.spy(() => {})
