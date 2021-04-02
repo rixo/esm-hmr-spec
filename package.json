@@ -5,7 +5,7 @@
   "dependencies": {
     "snowpack": "^3.2.0",
     "test-hmr": "^0.2.2",
-    "vite": "^2.0.3"
+    "vite": "^2.1.5"
   },
   "devDependencies": {
     "@rixo/eslint-config": "^0.11.0-alpha.0",
